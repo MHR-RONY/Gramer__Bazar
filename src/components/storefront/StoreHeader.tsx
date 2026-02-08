@@ -1,5 +1,8 @@
-import { Phone, Search, ShoppingCart, User } from "lucide-react";
-import { categoryMenu } from "@/data/storefront";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Phone, Search, ShoppingCart, User, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { categoryMenu, demoProducts } from "@/data/storefront";
+import { MENU_TO_SLUG } from "@/data/categorySlugMap";
 import { useCart } from "@/components/storefront/cart/CartProvider";
 
 const InfoBar = () => {
@@ -39,6 +42,46 @@ const IconButton = ({
 
 export const StoreHeader = () => {
 	const { openCart } = useCart();
+	const navigate = useNavigate();
+	const [query, setQuery] = useState("");
+	const [focused, setFocused] = useState(false);
+	const wrapperRef = useRef<HTMLDivElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	/* Close dropdown on click outside */
+	useEffect(() => {
+		const handler = (e: MouseEvent) => {
+			if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+				setFocused(false);
+			}
+		};
+		document.addEventListener("mousedown", handler);
+		return () => document.removeEventListener("mousedown", handler);
+	}, []);
+
+	/* Close on Escape */
+	useEffect(() => {
+		const handler = (e: KeyboardEvent) => {
+			if (e.key === "Escape") {
+				setFocused(false);
+				inputRef.current?.blur();
+			}
+		};
+		window.addEventListener("keydown", handler);
+		return () => window.removeEventListener("keydown", handler);
+	}, []);
+
+	const results = useMemo(() => {
+		const q = query.trim().toLowerCase();
+		if (q.length < 2) return [];
+		return demoProducts.filter(
+			(p) =>
+				p.name.toLowerCase().includes(q) ||
+				p.category.toLowerCase().includes(q)
+		).slice(0, 8);
+	}, [query]);
+
+	const showDropdown = focused && query.trim().length >= 2;
 
 	return (
 		<header className="sticky top-0 z-40 w-full bg-header text-header-foreground">
@@ -46,31 +89,112 @@ export const StoreHeader = () => {
 
 			<div className="border-b bg-header/70 backdrop-blur supports-[backdrop-filter]:bg-header/60">
 				<div className="container">
-					<div className="flex items-center justify-between gap-3 py-3">
-						<div className="flex items-center gap-3">
-							<a href="/" className="leading-none">
+					<div className="flex items-center gap-3 py-3">
+						{/* Logo */}
+						<div className="shrink-0">
+							<Link to="/" className="leading-none">
 								<img
 									src="https://res.cloudinary.com/dreby3qi3/image/upload/v1770491278/Untitled_240_x_60_px_ttkwjj.png"
 									alt="Gramer Bazar"
 									className="h-14 w-auto object-contain"
 								/>
-							</a>
+							</Link>
 						</div>
 
-						<div className="ml-auto flex items-center gap-2">
-							<IconButton label="Search">
-								<Search className="h-5 w-5" />
-							</IconButton>
+						{/* Search bar — takes up remaining space */}
+						<div ref={wrapperRef} className="relative flex-1 max-w-2xl mx-auto">
+							<div
+								className={
+									"flex items-center gap-2 rounded-xl border-2 bg-background px-4 py-2.5 transition-all " +
+									(focused
+										? "border-primary shadow-md shadow-primary/10"
+										: "border-border/60 hover:border-primary/40")
+								}
+							>
+								<Search className="h-5 w-5 shrink-0 text-muted-foreground" />
+								<input
+									ref={inputRef}
+									type="text"
+									value={query}
+									onChange={(e) => setQuery(e.target.value)}
+									onFocus={() => setFocused(true)}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" && query.trim().length >= 1) {
+											setFocused(false);
+											inputRef.current?.blur();
+											navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+										}
+									}}
+									placeholder="Search products... (e.g. Honey, Oil, Ghee)"
+									className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
+								/>
+								{query && (
+									<button
+										type="button"
+										onClick={() => { setQuery(""); inputRef.current?.focus(); }}
+										className="inline-flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+									>
+										<X className="h-3.5 w-3.5" />
+									</button>
+								)}
+							</div>
+
+							{/* Results dropdown */}
+							{showDropdown && (
+								<div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[60vh] overflow-y-auto rounded-xl border bg-card shadow-2xl">
+									{results.length === 0 ? (
+										<p className="px-4 py-6 text-center text-sm text-muted-foreground">
+											No products found for "<span className="font-semibold text-foreground">{query}</span>"
+										</p>
+									) : (
+										<ul className="p-1.5">
+											{results.map((p) => (
+												<li key={p.id}>
+													<button
+														type="button"
+														onClick={() => {
+															setFocused(false);
+															setQuery("");
+															navigate(`/product/${p.id}`);
+														}}
+														className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors hover:bg-accent"
+													>
+														<img
+															src={p.imageUrl}
+															alt={p.name}
+															className="h-12 w-12 shrink-0 rounded-lg border object-cover"
+														/>
+														<div className="min-w-0 flex-1">
+															<p className="truncate text-sm font-semibold text-foreground">{p.name}</p>
+															<p className="text-xs text-muted-foreground">{p.category}</p>
+														</div>
+														<div className="text-right shrink-0">
+															<p className="text-sm font-bold text-primary">৳{p.discountedPrice}</p>
+															{p.originalPrice > p.discountedPrice && (
+																<p className="text-xs text-muted-foreground line-through">৳{p.originalPrice}</p>
+															)}
+														</div>
+													</button>
+												</li>
+											))}
+										</ul>
+									)}
+								</div>
+							)}
+						</div>
+
+						{/* Right icons */}
+						<div className="shrink-0 flex items-center gap-2">
 							<IconButton label="Cart" onClick={openCart}>
 								<ShoppingCart className="h-5 w-5" />
 							</IconButton>
-							<a
-								href="/profile"
+							<Link
+								to="/profile"
 								aria-label="User profile"
 								className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/70 bg-background/70 text-foreground transition-colors hover:bg-accent"
 							>
 								<User className="h-5 w-5" />
-							</a>
+							</Link>
 						</div>
 					</div>
 				</div>
@@ -81,15 +205,16 @@ export const StoreHeader = () => {
 						<nav className="w-full">
 							<ul className="flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-2 py-2">
 								{categoryMenu.map((item) => {
-									const href = item === "Offer Zone" ? "/offer" : `/category/${encodeURIComponent(item)}`;
+									const slug = MENU_TO_SLUG[item];
+									const to = `/category/${slug}`;
 									return (
 										<li key={item}>
-											<a
-												href={href}
+											<Link
+												to={to}
 												className="nav-underline rounded-md px-1 py-1 text-sm font-semibold text-foreground/75 transition-colors hover:text-primary"
 											>
 												{item}
-											</a>
+											</Link>
 										</li>
 									);
 								})}
@@ -103,21 +228,23 @@ export const StoreHeader = () => {
 					<div className="container pb-3">
 						<div className="flex gap-2 overflow-x-auto whitespace-nowrap pr-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 							{categoryMenu.map((item) => {
-								const href = item === "Offer Zone" ? "/offer" : `/category/${encodeURIComponent(item)}`;
+								const slug = MENU_TO_SLUG[item];
+								const to = `/category/${slug}`;
 								return (
-									<a
+									<Link
 										key={item}
-										href={href}
+										to={to}
 										className="nav-underline shrink-0 rounded-full border bg-background px-3 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-primary"
 									>
 										{item}
-									</a>
+									</Link>
 								);
 							})}
 						</div>
 					</div>
 				</div>
 			</div>
+
 		</header>
 	);
 };

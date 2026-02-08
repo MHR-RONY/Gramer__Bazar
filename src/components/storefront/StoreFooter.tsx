@@ -1,5 +1,7 @@
 import { MapPin, Mail, Phone, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { categoryMenu } from "@/data/storefront";
+import { MENU_TO_SLUG } from "@/data/categorySlugMap";
 
 /* ── inline SVG social icons (larger) ── */
 const FacebookIcon = () => (
@@ -127,13 +129,13 @@ export const StoreFooter = () => {
 						<ul className="space-y-3 text-sm">
 							{categoryMenu.slice(0, 8).map((c) => (
 								<li key={c}>
-									<a
-										href="/"
+									<Link
+										to={`/category/${MENU_TO_SLUG[c]}`}
 										className="group flex items-center gap-2 text-footer-muted transition-colors hover:text-primary"
 									>
 										<span className="inline-block h-1 w-1 rounded-full bg-footer-muted transition-colors group-hover:bg-primary" />
 										{c}
-									</a>
+									</Link>
 								</li>
 							))}
 						</ul>
@@ -149,19 +151,19 @@ export const StoreFooter = () => {
 							{[
 								{ label: "Home", href: "/" },
 								{ label: "Shop", href: "/" },
-								{ label: "Offer Zone", href: "/offer" },
+								{ label: "Offer Zone", href: "/category/offer-zone" },
 								{ label: "My Profile", href: "/profile" },
 								{ label: "About Us", href: "/" },
 								{ label: "Privacy Policy", href: "/" },
 							].map((l) => (
 								<li key={l.label}>
-									<a
-										href={l.href}
+									<Link
+										to={l.href}
 										className="group flex items-center gap-2 text-footer-muted transition-colors hover:text-primary"
 									>
 										<span className="inline-block h-1 w-1 rounded-full bg-footer-muted transition-colors group-hover:bg-primary" />
 										{l.label}
-									</a>
+									</Link>
 								</li>
 							))}
 						</ul>
