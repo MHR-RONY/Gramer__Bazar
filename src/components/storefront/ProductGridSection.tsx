@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useCallback, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import type { StoreProduct } from "@/data/storefront";
 
@@ -17,8 +17,8 @@ export const ProductGridSection = ({
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const isDragging = useRef(false);
 	const startX = useRef(0);
-	const scrollLeft = useRef(0);
-	const [dragged, setDragged] = useState(false);
+	const scrollLeftStart = useRef(0);
+	const hasMoved = useRef(false);
 
 	const scroll = (dir: "left" | "right") => {
 		if (!scrollRef.current) return;
@@ -30,32 +30,56 @@ export const ProductGridSection = ({
 		});
 	};
 
-	const onPointerDown = useCallback((e: React.PointerEvent) => {
+	// Attach drag listeners on the document so drag works even when pointer leaves container
+	useEffect(() => {
 		const el = scrollRef.current;
 		if (!el) return;
-		isDragging.current = true;
-		setDragged(false);
-		startX.current = e.clientX;
-		scrollLeft.current = el.scrollLeft;
-		el.setPointerCapture(e.pointerId);
-		el.style.scrollBehavior = "auto";
-		el.style.cursor = "grabbing";
-	}, []);
 
-	const onPointerMove = useCallback((e: React.PointerEvent) => {
-		if (!isDragging.current || !scrollRef.current) return;
-		const dx = e.clientX - startX.current;
-		if (Math.abs(dx) > 3) setDragged(true);
-		scrollRef.current.scrollLeft = scrollLeft.current - dx;
-	}, []);
+		const onMouseDown = (e: MouseEvent) => {
+			// Ignore clicks on buttons/links — let them work normally
+			const target = e.target as HTMLElement;
+			if (target.closest("a") || target.closest("button")) return;
 
-	const onPointerUp = useCallback((e: React.PointerEvent) => {
-		const el = scrollRef.current;
-		if (!el) return;
-		isDragging.current = false;
-		el.releasePointerCapture(e.pointerId);
-		el.style.scrollBehavior = "smooth";
-		el.style.cursor = "";
+			isDragging.current = true;
+			hasMoved.current = false;
+			startX.current = e.pageX;
+			scrollLeftStart.current = el.scrollLeft;
+			el.style.cursor = "grabbing";
+		};
+
+		const onMouseMove = (e: MouseEvent) => {
+			if (!isDragging.current) return;
+			const dx = e.pageX - startX.current;
+			if (Math.abs(dx) > 5) hasMoved.current = true;
+			el.scrollLeft = scrollLeftStart.current - dx;
+		};
+
+		const onMouseUp = () => {
+			if (!isDragging.current) return;
+			isDragging.current = false;
+			el.style.cursor = "grab";
+		};
+
+		// Block clicks that follow a drag (on images, etc.)
+		const onClickCapture = (e: MouseEvent) => {
+			if (hasMoved.current) {
+				e.preventDefault();
+				e.stopPropagation();
+				hasMoved.current = false;
+			}
+		};
+
+		el.addEventListener("mousedown", onMouseDown);
+		document.addEventListener("mousemove", onMouseMove);
+		document.addEventListener("mouseup", onMouseUp);
+		el.addEventListener("click", onClickCapture, true);
+
+		return () => {
+			el.removeEventListener("mousedown", onMouseDown);
+			document.removeEventListener("mousemove", onMouseMove);
+			document.removeEventListener("mouseup", onMouseUp);
+			el.removeEventListener("click", onClickCapture, true);
+		};
 	}, []);
 
 	return (
@@ -91,17 +115,12 @@ export const ProductGridSection = ({
 
 				<div
 					ref={scrollRef}
-					onPointerDown={onPointerDown}
-					onPointerMove={onPointerMove}
-					onPointerUp={onPointerUp}
-					onPointerCancel={onPointerUp}
-					className="scrollbar-hide flex cursor-grab items-stretch gap-4 overflow-x-auto scroll-smooth select-none touch-pan-x"
+					className="scrollbar-hide flex cursor-grab items-stretch gap-4 overflow-x-auto touch-pan-x"
 				>
 					{products.map((p) => (
 						<div
 							key={p.id}
 							className="flex w-[200px] shrink-0 sm:w-[220px] lg:w-[240px]"
-							onClickCapture={(e) => { if (dragged) e.preventDefault(); }}
 						>
 							<ProductCard product={p} />
 						</div>
