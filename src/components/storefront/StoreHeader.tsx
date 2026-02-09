@@ -1,20 +1,49 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Phone, Search, ShoppingCart, User, X } from "lucide-react";
+import { Menu, Phone, Search, ShoppingCart, User, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { categoryMenu, demoProducts } from "@/data/storefront";
 import { MENU_TO_SLUG } from "@/data/categorySlugMap";
 import { useCart } from "@/components/storefront/cart/CartProvider";
 
 const InfoBar = () => {
+	const [visible, setVisible] = useState(true);
+	const lastScrollY = useRef(0);
+
+	useEffect(() => {
+		const onScroll = () => {
+			const y = window.scrollY;
+			if (y > 60) {
+				setVisible(false);
+			} else {
+				setVisible(true);
+			}
+			lastScrollY.current = y;
+		};
+		window.addEventListener("scroll", onScroll, { passive: true });
+		return () => window.removeEventListener("scroll", onScroll);
+	}, []);
+
 	return (
-		<div className="bg-topbar text-topbar-foreground">
-			<div className="container">
-				<div className="flex min-h-10 items-center justify-center gap-2 py-2 text-sm font-medium">
-					<Phone className="h-4 w-4 shrink-0" />
-					<span>
-						আমাদের যে কোন পণ্য অর্ডার করতে কল বা WhatsApp করুন: +8801577302590 হট লাইন:
-						09000000000
-					</span>
+		<div
+			className={
+				"bg-topbar text-topbar-foreground overflow-hidden transition-all duration-300 " +
+				(visible ? "max-h-12 opacity-100" : "max-h-0 opacity-0")
+			}
+		>
+			{/* Desktop: centered, no marquee */}
+			<div className="hidden sm:flex min-h-10 items-center justify-center gap-2 py-2 text-sm font-medium container">
+				<Phone className="h-4 w-4 shrink-0" />
+				<span>
+					আমাদের যে কোন পণ্য অর্ডার করতে কল বা WhatsApp করুন: +8801577302590 হট লাইন:
+					09000000000
+				</span>
+			</div>
+			{/* Mobile: single-line marquee */}
+			<div className="sm:hidden whitespace-nowrap overflow-hidden">
+				<div className="inline-block animate-marquee py-2 text-sm font-medium">
+					<Phone className="mr-1.5 inline h-4 w-4 align-text-bottom" />
+					আমাদের যে কোন পণ্য অর্ডার করতে কল বা WhatsApp করুন: +8801577302590 হট লাইন:
+					09000000000
 				</div>
 			</div>
 		</div>
@@ -41,10 +70,11 @@ const IconButton = ({
 );
 
 export const StoreHeader = () => {
-	const { openCart } = useCart();
+	const { openCart, count } = useCart();
 	const navigate = useNavigate();
 	const [query, setQuery] = useState("");
 	const [focused, setFocused] = useState(false);
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const wrapperRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -96,22 +126,22 @@ export const StoreHeader = () => {
 								<img
 									src="https://res.cloudinary.com/dreby3qi3/image/upload/v1770491278/Untitled_240_x_60_px_ttkwjj.png"
 									alt="Gramer Bazar"
-									className="h-14 w-auto object-contain"
+									className="h-9 sm:h-14 w-auto object-contain"
 								/>
 							</Link>
 						</div>
 
 						{/* Search bar — takes up remaining space */}
-						<div ref={wrapperRef} className="relative flex-1 max-w-2xl mx-auto">
+						<div ref={wrapperRef} className="relative min-w-0 flex-1 max-w-2xl mx-auto">
 							<div
 								className={
-									"flex items-center gap-2 rounded-xl border-2 bg-background px-4 py-2.5 transition-all " +
+									"flex items-center gap-1.5 sm:gap-2 rounded-xl border-2 bg-background px-2.5 sm:px-4 py-2 sm:py-2.5 transition-all " +
 									(focused
 										? "border-primary shadow-md shadow-primary/10"
 										: "border-border/60 hover:border-primary/40")
 								}
 							>
-								<Search className="h-5 w-5 shrink-0 text-muted-foreground" />
+								<Search className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-muted-foreground" />
 								<input
 									ref={inputRef}
 									type="text"
@@ -126,7 +156,7 @@ export const StoreHeader = () => {
 										}
 									}}
 									placeholder="Search products... (e.g. Honey, Oil, Ghee)"
-									className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
+									className="min-w-0 flex-1 bg-transparent text-xs sm:text-sm text-foreground placeholder:text-muted-foreground outline-none"
 								/>
 								{query && (
 									<button
@@ -183,11 +213,21 @@ export const StoreHeader = () => {
 							)}
 						</div>
 
-						{/* Right icons */}
-						<div className="shrink-0 flex items-center gap-2">
-							<IconButton label="Cart" onClick={openCart}>
+						{/* Right icons — hidden on mobile (shown in bottom nav) */}
+						<div className="shrink-0 hidden lg:flex items-center gap-2">
+							<button
+								type="button"
+								aria-label="Cart"
+								onClick={openCart}
+								className="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/70 bg-background/70 text-foreground transition-colors hover:bg-accent"
+							>
 								<ShoppingCart className="h-5 w-5" />
-							</IconButton>
+								{count > 0 && (
+									<span className="absolute -right-1.5 -top-1.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-white">
+										{count}
+									</span>
+								)}
+							</button>
 							<Link
 								to="/profile"
 								aria-label="User profile"
@@ -196,6 +236,64 @@ export const StoreHeader = () => {
 								<User className="h-5 w-5" />
 							</Link>
 						</div>
+
+						{/* Hamburger menu button — mobile only */}
+						<div className="shrink-0 lg:hidden">
+							<button
+								type="button"
+								aria-label="Menu"
+								onClick={() => setMobileMenuOpen(true)}
+								className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/70 bg-background/70 text-foreground transition-colors hover:bg-accent"
+							>
+								<Menu className="h-5 w-5" />
+							</button>
+						</div>
+
+						{/* Side drawer overlay + panel */}
+						{mobileMenuOpen && (
+							<div className="fixed inset-0 z-[100] lg:hidden">
+								{/* Backdrop */}
+								<div
+									className="absolute inset-0 bg-black/40 animate-fade-in"
+									onClick={() => setMobileMenuOpen(false)}
+								/>
+								{/* Drawer */}
+								<div className="absolute right-0 top-0 h-full w-72 bg-card shadow-2xl animate-slide-in-right flex flex-col">
+									{/* Header */}
+									<div className="flex items-center justify-between border-b px-4 py-3">
+										<span className="text-base font-bold text-foreground">মেনু</span>
+										<button
+											type="button"
+											aria-label="Close menu"
+											onClick={() => setMobileMenuOpen(false)}
+											className="inline-flex h-8 w-8 items-center justify-center rounded-md text-foreground hover:bg-accent"
+										>
+											<X className="h-5 w-5" />
+										</button>
+									</div>
+									{/* Categories */}
+									<div className="flex-1 overflow-y-auto p-3">
+										<p className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+											Categories
+										</p>
+										{categoryMenu.map((item) => {
+											const slug = MENU_TO_SLUG[item];
+											const to = `/category/${slug}`;
+											return (
+												<Link
+													key={item}
+													to={to}
+													onClick={() => setMobileMenuOpen(false)}
+													className="flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
+												>
+													{item}
+												</Link>
+											);
+										})}
+									</div>
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
 
@@ -223,26 +321,6 @@ export const StoreHeader = () => {
 					</div>
 				</div>
 
-				{/* Mobile category scroller */}
-				<div className="lg:hidden">
-					<div className="container pb-3">
-						<div className="flex gap-2 overflow-x-auto whitespace-nowrap pr-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-							{categoryMenu.map((item) => {
-								const slug = MENU_TO_SLUG[item];
-								const to = `/category/${slug}`;
-								return (
-									<Link
-										key={item}
-										to={to}
-										className="nav-underline shrink-0 rounded-full border bg-background px-3 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-primary"
-									>
-										{item}
-									</Link>
-								);
-							})}
-						</div>
-					</div>
-				</div>
 			</div>
 
 		</header>

@@ -34,14 +34,14 @@ export const HeroBanner = () => {
 								key={s.url}
 								src={s.url}
 								alt={s.alt}
-								className="h-[320px] w-full shrink-0 object-cover sm:h-[360px] lg:h-[420px]"
+								className="h-[200px] w-full shrink-0 object-cover sm:h-[360px] lg:h-[420px]"
 								loading="lazy"
 							/>
 						))}
 					</div>
 
 					<div
-						className="absolute inset-0"
+						className="absolute inset-0 hidden sm:block"
 						style={{
 							background:
 								"linear-gradient(to right, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.7) 30%, rgba(255,255,255,0.3) 50%, transparent 65%)",
@@ -50,20 +50,20 @@ export const HeroBanner = () => {
 
 					<div className="absolute inset-0">
 						<div className="flex h-full items-end">
-							<div className="w-full p-6 pb-10 sm:p-10 sm:pb-14 lg:max-w-[60%]">
-								<p className="mb-2 inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-semibold text-foreground">
+							<div className="w-full p-4 pb-6 sm:p-10 sm:pb-14 lg:max-w-[60%]">
+								<p className="mb-2 hidden sm:inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-semibold text-foreground">
 									{config.heroBadge}
 								</p>
 
-								<h1 className="text-balance text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+								<h1 className="hidden sm:block text-balance text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
 									{config.heroTitle}
 								</h1>
 
-								<p className="mt-3 max-w-xl text-pretty text-sm text-ink-muted sm:text-base">
+								<p className="hidden sm:block mt-3 max-w-xl text-pretty text-sm text-ink-muted sm:text-base">
 									{config.heroSubtitle}
 								</p>
 
-								<div className="mt-6 flex items-center gap-2">
+								<div className="sm:mt-6 flex items-center gap-2">
 									{slides.map((_, i) => (
 										<button
 											key={i}

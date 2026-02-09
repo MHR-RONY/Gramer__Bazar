@@ -17,8 +17,10 @@ import AdminLogin from "./pages/AdminLogin";
 import CategoryPage from "./pages/Category";
 import SearchResults from "./pages/SearchResults";
 import NotFound from "./pages/NotFound";
+import AllProducts from "./pages/AllProducts";
 import { CartProvider } from "@/components/storefront/cart/CartProvider";
 import { CartDrawer } from "@/components/storefront/cart/CartDrawer";
+import { MobileBottomNav } from "@/components/storefront/MobileBottomNav";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,7 @@ const App = () => (
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<Index />} />
+						<Route path="/products" element={<AllProducts />} />
 						<Route path="/category/:slug" element={<CategoryListing />} />
 						<Route path="/product/:id" element={<ProductPreview />} />
 						<Route path="/checkout" element={<Checkout />} />
@@ -47,6 +50,7 @@ const App = () => (
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 					<CartDrawer />
+					<MobileBottomNav />
 				</BrowserRouter>
 			</CartProvider>
 		</TooltipProvider>

@@ -27,15 +27,15 @@ export const TrustStrip = () => {
   return (
     <section className="bg-background">
       <div className="container pb-2">
-        <div className="grid gap-3 rounded-2xl border bg-card p-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 rounded-2xl border bg-card p-3 sm:p-4 lg:grid-cols-4">
           {items.map(({ title, desc, Icon }) => (
-            <div key={title} className="flex items-start gap-3">
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-foreground">
-                <Icon className="h-5 w-5" />
+            <div key={title} className="flex items-start gap-2 sm:gap-3">
+              <div className="inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-foreground">
+                <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
-              <div>
-                <div className="text-sm font-extrabold text-foreground">{title}</div>
-                <div className="text-xs text-ink-muted">{desc}</div>
+              <div className="min-w-0">
+                <div className="text-xs sm:text-sm font-extrabold text-foreground">{title}</div>
+                <div className="text-[10px] sm:text-xs text-ink-muted">{desc}</div>
               </div>
             </div>
           ))}
