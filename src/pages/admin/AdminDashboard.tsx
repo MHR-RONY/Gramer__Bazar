@@ -22,7 +22,7 @@ import {
 	readContentConfig,
 	writeContentConfig,
 	type StorefrontContentConfig,
-} from "@/data/storefrontContent";
+} from "@/data/storefront/content";
 import { AdminProductsSection } from "@/components/admin/AdminProductsSection";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { isAdminDemoAuthed } from "@/lib/adminDemoAuth";

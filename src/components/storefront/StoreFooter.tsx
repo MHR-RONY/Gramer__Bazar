@@ -1,7 +1,7 @@
 import { MapPin, Mail, Phone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { categoryMenu } from "@/data/storefront";
-import { MENU_TO_SLUG } from "@/data/categorySlugMap";
+import { MENU_TO_SLUG } from "@/data/storefront/categorySlugMap";
 
 /* ── inline SVG social icons (stylish) ── */
 const FacebookIcon = () => (

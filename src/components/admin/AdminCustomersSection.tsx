@@ -31,7 +31,7 @@ import {
   setAdminCustomerStatus,
   type AdminCustomer,
   type CustomerStatus,
-} from "@/data/customerAdmin";
+} from "@/data/admin/customerAdmin";
 
 type StatusFilter = "all" | CustomerStatus;
 

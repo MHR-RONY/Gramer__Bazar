@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Menu, Phone, Search, ShoppingCart, User, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { categoryMenu, demoProducts } from "@/data/storefront";
-import { MENU_TO_SLUG } from "@/data/categorySlugMap";
+import { MENU_TO_SLUG } from "@/data/storefront/categorySlugMap";
 import { useCart } from "@/components/storefront/cart/CartProvider";
 
 const InfoBar = () => {

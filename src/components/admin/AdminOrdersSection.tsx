@@ -31,7 +31,7 @@ import {
   updateAdminOrderStatus,
   type AdminOrder,
   type OrderStatus,
-} from "@/data/orderAdmin";
+} from "@/data/admin/orderAdmin";
 
 type StatusFilter = "all" | OrderStatus;
 

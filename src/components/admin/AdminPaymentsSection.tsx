@@ -33,7 +33,7 @@ import {
   type AdminPayment,
   type PaymentMethod,
   type PaymentStatus,
-} from "@/data/paymentAdmin";
+} from "@/data/admin/paymentAdmin";
 
 type StatusFilter = "all" | PaymentStatus;
 type MethodFilter = "all" | PaymentMethod;

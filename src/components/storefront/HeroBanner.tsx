@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { defaultContentConfig, readContentConfig, type HeroSlide } from "@/data/storefrontContent";
+import { defaultContentConfig, readContentConfig, type HeroSlide } from "@/data/storefront/content";
 
 export const HeroBanner = () => {
 	const [config, setConfig] = useState(defaultContentConfig);

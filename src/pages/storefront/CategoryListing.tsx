@@ -5,7 +5,7 @@ import { StoreHeader } from "@/components/storefront/StoreHeader";
 import { StoreFooter } from "@/components/storefront/StoreFooter";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import { demoProducts, categoryMenu, type StoreProductCategory } from "@/data/storefront";
-import { SLUG_TO_MENU } from "@/data/categorySlugMap";
+import { SLUG_TO_MENU } from "@/data/storefront/categorySlugMap";
 
 /* ── Banner info per slug ── */
 const BANNER_INFO: Record<string, { badge: string; title: string; description: string }> = {

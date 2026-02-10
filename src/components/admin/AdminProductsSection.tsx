@@ -28,7 +28,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Plus, RefreshCcw, Trash2, Pencil } from "lucide-react";
-import { readAdminProducts, writeAdminProducts, type AdminProduct } from "@/data/productAdmin";
+import { readAdminProducts, writeAdminProducts, type AdminProduct } from "@/data/admin/productAdmin";
 
 type StatusFilter = "all" | "active" | "inactive";
 

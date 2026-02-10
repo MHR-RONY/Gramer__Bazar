@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { readAdminOrders, type AdminOrder } from "@/data/orderAdmin";
+import { readAdminOrders, type AdminOrder } from "@/data/admin/orderAdmin";
 
 const CUSTOMERS_KEY = "gb_customers_v1";
 
