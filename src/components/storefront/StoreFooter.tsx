@@ -33,194 +33,194 @@ const LinkedInIcon = () => (
 export const StoreFooter = () => {
 	return (
 		<>
-		<footer className="bg-footer text-footer-foreground pb-16 lg:pb-0">
-			{/* ── Gradient accent bar ── */}
-			<div className="h-1.5 bg-gradient-to-r from-orange-600 via-amber-400 to-orange-600" />
+			<footer className="bg-footer text-footer-foreground pb-16 lg:pb-0">
+				{/* ── Gradient accent bar ── */}
+				<div className="h-1.5 bg-gradient-to-r from-orange-600 via-amber-400 to-orange-600" />
 
-			{/* ── Newsletter / CTA strip ── */}
-			<div className="border-b border-footer-border bg-white/[0.03]">
-				<div className="container flex flex-col items-center justify-between gap-4 py-6 sm:py-12 md:flex-row">
-					<div className="text-center md:text-left">
-						<h3 className="text-base sm:text-xl font-bold">
-							Stay Connected with <span className="text-primary">Gramer Bazar</span>
-						</h3>
-						<p className="mt-1 text-xs sm:text-sm text-footer-muted">
-							Get exclusive offers, new arrivals and fresh deals directly!
-						</p>
-					</div>
-					<div className="flex w-full max-w-md items-center gap-0">
-						<input
-							type="email"
-							placeholder="Enter your email address"
-							className="h-10 sm:h-12 flex-1 rounded-l-lg border border-white/10 bg-white/5 px-3 sm:px-4 text-xs sm:text-sm text-white placeholder:text-gray-500 focus:border-primary focus:outline-none"
-						/>
-						<button
-							type="button"
-							className="flex h-10 sm:h-12 items-center gap-1.5 sm:gap-2 rounded-r-lg bg-primary px-4 sm:px-6 text-xs sm:text-sm font-semibold text-white transition-colors hover:bg-primary/80"
-						>
-							Subscribe
-							<ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-						</button>
+				{/* ── Newsletter / CTA strip ── */}
+				<div className="border-b border-footer-border bg-white/[0.03]">
+					<div className="container flex flex-col items-center justify-between gap-4 py-6 sm:py-12 md:flex-row">
+						<div className="text-center md:text-left">
+							<h3 className="text-base sm:text-xl font-bold">
+								Stay Connected with <span className="text-primary">Gramer Bazar</span>
+							</h3>
+							<p className="mt-1 text-xs sm:text-sm text-footer-muted">
+								Get exclusive offers, new arrivals and fresh deals directly!
+							</p>
+						</div>
+						<div className="flex w-full max-w-md items-center gap-0">
+							<input
+								type="email"
+								placeholder="Enter your email address"
+								className="h-10 sm:h-12 flex-1 rounded-l-lg border border-white/10 bg-white/5 px-3 sm:px-4 text-xs sm:text-sm text-white placeholder:text-gray-500 focus:border-primary focus:outline-none"
+							/>
+							<button
+								type="button"
+								className="flex h-10 sm:h-12 items-center gap-1.5 sm:gap-2 rounded-r-lg bg-primary px-4 sm:px-6 text-xs sm:text-sm font-semibold text-white transition-colors hover:bg-primary/80"
+							>
+								Subscribe
+								<ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+							</button>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{/* ── Main footer content ── */}
-			<div className="container pb-10 sm:pb-16" style={{ paddingTop: "2rem" }}>
-				<div className="grid gap-8 sm:gap-12 grid-cols-2 lg:grid-cols-4">
-					{/* On mobile the brand column spans full width */}
-					{/* ── Brand Column ── */}
-					<div className="col-span-2 lg:col-span-1 space-y-4 sm:space-y-6">
+				{/* ── Main footer content ── */}
+				<div className="container pb-10 sm:pb-16" style={{ paddingTop: "2rem" }}>
+					<div className="grid gap-8 sm:gap-12 grid-cols-2 lg:grid-cols-4">
+						{/* On mobile the brand column spans full width */}
+						{/* ── Brand Column ── */}
+						<div className="col-span-2 lg:col-span-1 space-y-4 sm:space-y-6">
+							<div>
+								<div className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+									<span className="text-primary">Gramer</span> Bazar
+								</div>
+								<div className="mt-1 h-0.5 w-10 sm:w-12 rounded bg-primary" />
+							</div>
+							<p className="text-xs sm:text-sm leading-relaxed text-footer-muted">
+								দেশি-খাঁটি খাবারের অনলাইন শপ। খাঁটি পণ্য, দ্রুত ডেলিভারি এবং ভালো সার্ভিস—সব এক
+								জায়গায়।
+							</p>
+
+							{/* social icons */}
+							<div className="flex items-center gap-3">
+								{[
+									{
+										href: "https://www.facebook.com/devstationit",
+										label: "Facebook",
+										icon: <FacebookIcon />,
+									},
+									{
+										href: "https://www.instagram.com/devstationit",
+										label: "Instagram",
+										icon: <InstagramIcon />,
+									},
+									{
+										href: "https://api.whatsapp.com/send/?phone=8801577302590&text&type=phone_number&app_absent=0",
+										label: "WhatsApp",
+										icon: <WhatsAppIcon />,
+									},
+									{
+										href: "https://www.linkedin.com/company/devstation-it/",
+										label: "LinkedIn",
+										icon: <LinkedInIcon />,
+									},
+								].map((s) => (
+									<a
+										key={s.label}
+										href={s.href}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-footer-muted transition-all duration-300 hover:scale-110 hover:border-white/40 hover:text-white hover:shadow-lg hover:shadow-white/10"
+										aria-label={s.label}
+									>
+										{s.icon}
+									</a>
+								))}
+							</div>
+						</div>
+
+						{/* ── Categories ── */}
 						<div>
-							<div className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-								<span className="text-primary">Gramer</span> Bazar
+							<div className="mb-3 sm:mb-5 flex items-center gap-2">
+								<div className="h-4 sm:h-5 w-1 rounded-full bg-primary" />
+								<span className="text-xs sm:text-sm font-bold uppercase tracking-widest">Categories</span>
 							</div>
-							<div className="mt-1 h-0.5 w-10 sm:w-12 rounded bg-primary" />
+							<ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
+								{categoryMenu.slice(0, 8).map((c) => (
+									<li key={c}>
+										<Link
+											to={`/category/${MENU_TO_SLUG[c]}`}
+											className="text-footer-muted transition-colors hover:text-primary"
+										>
+											{c}
+										</Link>
+									</li>
+								))}
+							</ul>
 						</div>
-						<p className="text-xs sm:text-sm leading-relaxed text-footer-muted">
-							দেশি-খাঁটি খাবারের অনলাইন শপ। খাঁটি পণ্য, দ্রুত ডেলিভারি এবং ভালো সার্ভিস—সব এক
-							জায়গায়।
-						</p>
 
-						{/* social icons */}
-						<div className="flex items-center gap-3">
-							{[
-								{
-									href: "https://www.facebook.com/devstationit",
-									label: "Facebook",
-									icon: <FacebookIcon />,
-								},
-								{
-									href: "https://www.instagram.com/devstationit",
-									label: "Instagram",
-									icon: <InstagramIcon />,
-								},
-								{
-									href: "https://api.whatsapp.com/send/?phone=8801577302590&text&type=phone_number&app_absent=0",
-									label: "WhatsApp",
-									icon: <WhatsAppIcon />,
-								},
-								{
-									href: "https://www.linkedin.com/company/devstation-it/",
-									label: "LinkedIn",
-									icon: <LinkedInIcon />,
-								},
-							].map((s) => (
-								<a
-									key={s.label}
-									href={s.href}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-footer-muted transition-all duration-300 hover:scale-110 hover:border-white/40 hover:text-white hover:shadow-lg hover:shadow-white/10"
-									aria-label={s.label}
-								>
-									{s.icon}
-								</a>
-							))}
-						</div>
-					</div>
-
-					{/* ── Categories ── */}
-					<div>
-						<div className="mb-3 sm:mb-5 flex items-center gap-2">
-							<div className="h-4 sm:h-5 w-1 rounded-full bg-primary" />
-							<span className="text-xs sm:text-sm font-bold uppercase tracking-widest">Categories</span>
-						</div>
-						<ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-							{categoryMenu.slice(0, 8).map((c) => (
-								<li key={c}>
-									<Link
-										to={`/category/${MENU_TO_SLUG[c]}`}
-										className="text-footer-muted transition-colors hover:text-primary"
-									>
-										{c}
-									</Link>
-								</li>
-							))}
-						</ul>
-					</div>
-
-					{/* ── Quick Links ── */}
-					<div>
-						<div className="mb-3 sm:mb-5 flex items-center gap-2">
-							<div className="h-4 sm:h-5 w-1 rounded-full bg-primary" />
-							<span className="text-xs sm:text-sm font-bold uppercase tracking-widest">Quick Links</span>
-						</div>
-						<ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-							{[
-								{ label: "Home", href: "/" },
-								{ label: "Shop", href: "/" },
-								{ label: "Offer Zone", href: "/category/offer-zone" },
-								{ label: "My Profile", href: "/profile" },
-								{ label: "About Us", href: "/" },
-								{ label: "Privacy Policy", href: "/" },
-							].map((l) => (
-								<li key={l.label}>
-									<Link
-										to={l.href}
-										className="text-footer-muted transition-colors hover:text-primary"
-									>
-										{l.label}
-									</Link>
-								</li>
-							))}
-						</ul>
-					</div>
-
-					{/* ── Contact & Address ── */}
-					<div className="col-span-2 lg:col-span-1">
-						<div className="mb-3 sm:mb-5 flex items-center gap-2">
-							<div className="h-4 sm:h-5 w-1 rounded-full bg-primary" />
-							<span className="text-xs sm:text-sm font-bold uppercase tracking-widest">Contact Us</span>
-						</div>
-						<div className="space-y-3 sm:space-y-5 text-xs sm:text-sm">
-							<div className="flex items-start gap-4 text-footer-muted">
-								<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
-									<MapPin className="h-4 w-4 text-primary" />
-								</div>
-								<div>
-									<div className="font-medium text-footer-foreground">Our Address</div>
-									<div className="mt-0.5">Dhaka, Bangladesh</div>
-								</div>
+						{/* ── Quick Links ── */}
+						<div>
+							<div className="mb-3 sm:mb-5 flex items-center gap-2">
+								<div className="h-4 sm:h-5 w-1 rounded-full bg-primary" />
+								<span className="text-xs sm:text-sm font-bold uppercase tracking-widest">Quick Links</span>
 							</div>
-							<div className="flex items-start gap-4 text-footer-muted">
-								<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
-									<Phone className="h-4 w-4 text-primary" />
-								</div>
-								<div>
-									<div className="font-medium text-footer-foreground">Call Us</div>
-									<div className="mt-0.5">+880 1577-302590</div>
-								</div>
+							<ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
+								{[
+									{ label: "Home", href: "/" },
+									{ label: "Shop", href: "/" },
+									{ label: "Offer Zone", href: "/category/offer-zone" },
+									{ label: "My Profile", href: "/profile" },
+									{ label: "About Us", href: "/" },
+									{ label: "Privacy Policy", href: "/" },
+								].map((l) => (
+									<li key={l.label}>
+										<Link
+											to={l.href}
+											className="text-footer-muted transition-colors hover:text-primary"
+										>
+											{l.label}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</div>
+
+						{/* ── Contact & Address ── */}
+						<div className="col-span-2 lg:col-span-1">
+							<div className="mb-3 sm:mb-5 flex items-center gap-2">
+								<div className="h-4 sm:h-5 w-1 rounded-full bg-primary" />
+								<span className="text-xs sm:text-sm font-bold uppercase tracking-widest">Contact Us</span>
 							</div>
-							<div className="flex items-start gap-4 text-footer-muted">
-								<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
-									<Mail className="h-4 w-4 text-primary" />
+							<div className="space-y-3 sm:space-y-5 text-xs sm:text-sm">
+								<div className="flex items-start gap-4 text-footer-muted">
+									<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
+										<MapPin className="h-4 w-4 text-primary" />
+									</div>
+									<div>
+										<div className="font-medium text-footer-foreground">Our Address</div>
+										<div className="mt-0.5">Dhaka, Bangladesh</div>
+									</div>
 								</div>
-								<div>
-									<div className="font-medium text-footer-foreground">Email Us</div>
-									<div className="mt-0.5">info@gramerbazar.com</div>
+								<div className="flex items-start gap-4 text-footer-muted">
+									<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
+										<Phone className="h-4 w-4 text-primary" />
+									</div>
+									<div>
+										<div className="font-medium text-footer-foreground">Call Us</div>
+										<div className="mt-0.5">+880 1577-302590</div>
+									</div>
+								</div>
+								<div className="flex items-start gap-4 text-footer-muted">
+									<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
+										<Mail className="h-4 w-4 text-primary" />
+									</div>
+									<div>
+										<div className="font-medium text-footer-foreground">Email Us</div>
+										<div className="mt-0.5">info@gramerbazar.com</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			{/* ── Bottom bar ── */}
-			<div className="border-t border-footer-border bg-white/[0.02]">
-				<div className="container flex flex-col items-center gap-2 sm:gap-4 py-4 sm:py-6 text-[10px] sm:text-xs text-footer-muted sm:flex-row sm:justify-between">
-					<div>© {new Date().getFullYear()} Gramer Bazar. All rights reserved to <a href="https://devstationit.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">DevStation IT</a></div>
-					<div className="flex items-center gap-1.5 sm:gap-2">
-						<span className="inline-block h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" />
-						Quality products
-						<span className="inline-block h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" />
-						Fast delivery
-						<span className="inline-block h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" />
-						Great service
+				{/* ── Bottom bar ── */}
+				<div className="border-t border-footer-border bg-white/[0.02]">
+					<div className="container flex flex-col items-center gap-2 sm:gap-4 py-4 sm:py-6 text-[10px] sm:text-xs text-footer-muted sm:flex-row sm:justify-between">
+						<div>© {new Date().getFullYear()} Gramer Bazar. All rights reserved to <a href="https://devstationit.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">DevStation IT</a></div>
+						<div className="flex items-center gap-1.5 sm:gap-2">
+							<span className="inline-block h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" />
+							Quality products
+							<span className="inline-block h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" />
+							Fast delivery
+							<span className="inline-block h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" />
+							Great service
+						</div>
 					</div>
 				</div>
-			</div>
-		</footer>
+			</footer>
 		</>
 	);
 };
