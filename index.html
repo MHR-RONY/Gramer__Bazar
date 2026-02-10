@@ -13,12 +13,15 @@
     />
     <meta name="author" content="MHR Rony - DevStation IT" />
 
-    <!-- Prevent theme flicker -->
+    <!-- Prevent theme flicker (admin pages only) -->
     <script>
       try {
-        const theme = localStorage.getItem("gb_admin_theme_v1");
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
+        const isAdminPage = window.location.pathname.startsWith("/admin");
+        if (isAdminPage) {
+          const theme = localStorage.getItem("gb_admin_theme_v1");
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+          }
         }
       } catch (e) {}
     </script>

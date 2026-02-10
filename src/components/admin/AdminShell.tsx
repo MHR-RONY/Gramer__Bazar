@@ -71,7 +71,6 @@ function AdminTopbar({
 	subtitle?: string;
 	themeApi: ThemeApi;
 }) {
-	const { toggleSidebar } = useSidebar();
 	const { theme, toggle } = themeApi;
 
 	return (
@@ -79,7 +78,7 @@ function AdminTopbar({
 			<div className="flex items-center gap-3 pl-2 pr-4 py-3 sm:pl-4 sm:pr-8">
 				{/* Left */}
 				<div className="flex items-center gap-2">
-					<SidebarTrigger className="h-10 w-10" onClick={toggleSidebar} />
+					<SidebarTrigger className="h-10 w-10" />
 					<div className="hidden sm:block">
 						<div className="text-lg font-extrabold tracking-tight">{title}</div>
 						{subtitle ? <div className="text-sm text-ink-muted">{subtitle}</div> : null}
@@ -182,13 +181,20 @@ export function AdminShell({
 	const isMobile = useIsMobile();
 
 	useEffect(() => {
-		// Apply theme to document root immediately
+		// Apply theme to document root for admin pages only
 		if (theme === "dark") {
 			document.documentElement.classList.add("dark");
 		} else {
 			document.documentElement.classList.remove("dark");
 		}
 	}, [theme]);
+
+	// Cleanup: remove dark class when leaving admin pages
+	useEffect(() => {
+		return () => {
+			document.documentElement.classList.remove("dark");
+		};
+	}, []);
 
 	const themeApi: ThemeApi = {
 		theme,

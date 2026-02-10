@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Menu, Phone, Search, ShoppingCart, User, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { categoryMenu, demoProducts } from "@/data/storefront";
@@ -78,6 +79,18 @@ export const StoreHeader = () => {
 	const wrapperRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
+	/* Prevent body scroll when mobile menu is open */
+	useEffect(() => {
+		if (mobileMenuOpen) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "";
+		}
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [mobileMenuOpen]);
+
 	/* Close dropdown on click outside */
 	useEffect(() => {
 		const handler = (e: MouseEvent) => {
@@ -132,7 +145,7 @@ export const StoreHeader = () => {
 						</div>
 
 						{/* Search bar — takes up remaining space */}
-						<div ref={wrapperRef} className="relative min-w-0 flex-1 max-w-2xl mx-auto">
+						<div ref={wrapperRef} className="relative min-w-0 flex-1 max-w-2xl lg:mx-auto">
 							<div
 								className={
 									"flex items-center gap-1.5 sm:gap-2 rounded-xl border-2 bg-background px-2.5 sm:px-4 py-2 sm:py-2.5 transition-all " +
@@ -155,7 +168,7 @@ export const StoreHeader = () => {
 											navigate(`/search?q=${encodeURIComponent(query.trim())}`);
 										}
 									}}
-									placeholder="Search products... (e.g. Honey, Oil, Ghee)"
+									placeholder="Search products..."
 									className="min-w-0 flex-1 bg-transparent text-xs sm:text-sm text-foreground placeholder:text-muted-foreground outline-none"
 								/>
 								{query && (
@@ -238,7 +251,7 @@ export const StoreHeader = () => {
 						</div>
 
 						{/* Hamburger menu button — mobile only */}
-						<div className="shrink-0 lg:hidden">
+						<div className="shrink-0 lg:hidden ml-auto -mr-2">
 							<button
 								type="button"
 								aria-label="Menu"
@@ -249,19 +262,19 @@ export const StoreHeader = () => {
 							</button>
 						</div>
 
-						{/* Side drawer overlay + panel */}
-						{mobileMenuOpen && (
-							<div className="fixed inset-0 z-[100] lg:hidden">
+						{/* Side drawer overlay + panel - rendered via portal for proper fixed positioning */}
+						{mobileMenuOpen && createPortal(
+							<>
 								{/* Backdrop */}
 								<div
-									className="absolute inset-0 bg-black/40 animate-fade-in"
+									className="fixed inset-0 z-[100] bg-black/40 animate-fade-in lg:hidden"
 									onClick={() => setMobileMenuOpen(false)}
 								/>
 								{/* Drawer */}
-								<div className="absolute right-0 top-0 h-full w-72 bg-card shadow-2xl animate-slide-in-right flex flex-col">
+								<div className="fixed right-0 top-0 bottom-0 w-80 z-[101] bg-card shadow-2xl animate-slide-in-right flex flex-col lg:hidden overflow-hidden">
 									{/* Header */}
-									<div className="flex items-center justify-between border-b px-4 py-3">
-										<span className="text-base font-bold text-foreground">মেনু</span>
+									<div className="flex items-center justify-between border-b px-5 py-4 shrink-0">
+										<span className="text-lg font-bold text-foreground">মেনু</span>
 										<button
 											type="button"
 											aria-label="Close menu"
@@ -271,28 +284,98 @@ export const StoreHeader = () => {
 											<X className="h-5 w-5" />
 										</button>
 									</div>
-									{/* Categories */}
-									<div className="flex-1 overflow-y-auto p-3">
-										<p className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-											Categories
-										</p>
-										{categoryMenu.map((item) => {
-											const slug = MENU_TO_SLUG[item];
-											const to = `/category/${slug}`;
-											return (
-												<Link
-													key={item}
-													to={to}
-													onClick={() => setMobileMenuOpen(false)}
-													className="flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
-												>
-													{item}
-												</Link>
-											);
-										})}
+									{/* Menu Content */}
+									<div className="flex-1 overflow-y-auto min-h-0">
+										{/* Main Navigation */}
+										<div className="border-b p-4">
+											<p className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+												Navigation
+											</p>
+											<Link
+												to="/"
+												onClick={() => setMobileMenuOpen(false)}
+												className="flex w-full items-center rounded-lg px-3 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
+											>
+												Home
+											</Link>
+											<Link
+												to="/products"
+												onClick={() => setMobileMenuOpen(false)}
+												className="flex w-full items-center rounded-lg px-3 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
+											>
+												All Products
+											</Link>
+											<Link
+												to="/category/best-seller"
+												onClick={() => setMobileMenuOpen(false)}
+												className="flex w-full items-center rounded-lg px-3 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
+											>
+												Best Seller
+											</Link>
+											<Link
+												to="/category/offer-zone"
+												onClick={() => setMobileMenuOpen(false)}
+												className="flex w-full items-center rounded-lg px-3 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
+											>
+												Offer Zone
+											</Link>
+										</div>
+										{/* Categories */}
+										<div className="p-4">
+											<p className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+												Categories
+											</p>
+											{categoryMenu.map((item) => {
+												const slug = MENU_TO_SLUG[item];
+												const to = `/category/${slug}`;
+												return (
+													<Link
+														key={item}
+														to={to}
+														onClick={() => setMobileMenuOpen(false)}
+														className="flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
+													>
+														{item}
+													</Link>
+												);
+											})}
+										</div>
+										{/* User Actions */}
+										<div className="border-t p-4">
+											<p className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+												Account
+											</p>
+											<button
+												type="button"
+												onClick={() => {
+													setMobileMenuOpen(false);
+													openCart();
+												}}
+												className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
+											>
+												<span className="flex items-center gap-3">
+													<ShoppingCart className="h-5 w-5" />
+													Cart
+												</span>
+												{count > 0 && (
+													<span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-primary px-2 text-xs font-bold text-white">
+														{count}
+													</span>
+												)}
+											</button>
+											<Link
+												to="/profile"
+												onClick={() => setMobileMenuOpen(false)}
+												className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent hover:text-primary"
+											>
+												<User className="h-5 w-5" />
+												Profile
+											</Link>
+										</div>
 									</div>
 								</div>
-							</div>
+							</>,
+							document.body
 						)}
 					</div>
 				</div>
