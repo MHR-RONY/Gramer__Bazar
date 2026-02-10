@@ -349,19 +349,19 @@ const AdminDashboard = () => {
 				{activeSection === "overview" && (
 					<>
 						{/* Stat cards */}
-						<section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+						<section className="grid gap-3 grid-cols-2 md:grid-cols-2 xl:grid-cols-4">
 							{statCards.map(({ key, label, value, change, changeTone, description, Icon }) => (
-								<article key={key} className="hover-scale relative overflow-hidden rounded-2xl border bg-card p-5 shadow-sm">
+								<article key={key} className="hover-scale relative overflow-hidden rounded-xl border bg-card p-4 shadow-sm md:rounded-2xl md:p-5">
 									<div className="flex items-start justify-between gap-3">
 										<div>
-											<div className="text-sm font-semibold uppercase tracking-wide text-ink-muted">{label}</div>
-											<div className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{value}</div>
+											<div className="text-xs font-semibold uppercase tracking-wide text-ink-muted md:text-sm">{label}</div>
+											<div className="mt-1.5 text-xl font-extrabold tracking-tight sm:text-2xl md:mt-2 md:text-3xl">{value}</div>
 										</div>
-										<div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-foreground">
-											<Icon className="h-6 w-6" />
+										<div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-foreground md:h-12 md:w-12 md:rounded-2xl">
+											<Icon className="h-5 w-5 md:h-6 md:w-6" />
 										</div>
 									</div>
-									<div className="mt-3 flex items-center justify-between text-sm">
+									<div className="mt-2 flex items-center justify-between text-xs sm:text-sm md:mt-3">
 										<div className={"font-semibold " + (changeTone === "up" ? "text-emerald-600" : "text-destructive")}>
 											{change}
 										</div>
@@ -372,8 +372,8 @@ const AdminDashboard = () => {
 						</section>
 
 						{/* Charts row */}
-						<section className="grid gap-6 lg:grid-cols-2">
-							<article className="rounded-2xl border bg-card p-5">
+						<section className="grid gap-4 lg:gap-6 lg:grid-cols-2">
+							<article className="rounded-xl border bg-card p-4 md:rounded-2xl md:p-5">
 								<div className="flex items-center justify-between gap-3">
 									<div>
 										<h2 className="text-base font-extrabold tracking-tight">Revenue & Orders (Last 7 days)</h2>

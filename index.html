@@ -1,14 +1,27 @@
- <!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
     <title>Gramer Bazar - Traditional Food Store</title>
     <meta
       name="description"
       content="Gramer Bazar - দেশি-খাঁটি খাবারের অনলাইন শপ"
     />
     <meta name="author" content="MHR Rony - DevStation IT" />
+
+    <!-- Prevent theme flicker -->
+    <script>
+      try {
+        const theme = localStorage.getItem("gb_admin_theme_v1");
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {}
+    </script>
 
     <meta property="og:title" content="Gramer Bazar - Traditional Food Store" />
     <meta

@@ -120,6 +120,8 @@ All colors MUST be HSL.
     --topbar-foreground: 0 0% 100%;
     --header: 222 30% 8%;
     --header-foreground: 210 40% 98%;
+    --sidebar-background: 222 30% 8%;
+    --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 24 95% 52%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
