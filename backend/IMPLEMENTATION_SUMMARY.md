@@ -16,6 +16,7 @@ A complete backend structure has been successfully implemented for the Gramer Ba
 - `mongoose` - MongoDB object modeling
 - `jsonwebtoken` - JWT authentication
 - `bcryptjs` - Password hashing
+- `multer@2.0.2` - Secure file upload middleware (patched DoS vulnerabilities)
 - `express-validator` - Request validation
 - `helmet` - Security headers
 - `cors` - Cross-origin resource sharing
@@ -196,6 +197,8 @@ npm start
 ✅ CodeQL scan completed
 ✅ 0 security vulnerabilities found
 ✅ All critical environment variables validated
+✅ Multer updated to 2.0.2 (patched 4 DoS vulnerabilities)
+✅ npm audit: 0 vulnerabilities
 
 ### Code Quality
 ✅ Type-safe implementation
