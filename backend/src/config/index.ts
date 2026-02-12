@@ -31,14 +31,23 @@ interface Config {
   };
 }
 
+// Validate critical environment variables
+if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('JWT_SECRET must be defined in production environment');
+}
+
+if (!process.env.MONGODB_URI) {
+  throw new Error('MONGODB_URI must be defined');
+}
+
 const config: Config = {
   env: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT || '5000', 10),
   mongodb: {
-    uri: process.env.MONGODB_URI || '',
+    uri: process.env.MONGODB_URI,
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'default-secret-key',
+    secret: process.env.JWT_SECRET || 'dev-secret-key-change-in-production',
     expire: process.env.JWT_EXPIRE || '7d',
   },
   cloudinary: {
